@@ -26,7 +26,7 @@ fn main() -> Result<()> {
 
     match opts.subcommand {
         SubCommand::Inspect(_) => actions::inspect(&opts),
-        SubCommand::Relocate(relocate_opts) => actions::relocate(&opts, &relocate_opts),
-        SubCommand::Cleanup(cleanup_opts) => actions::cleanup(&opts, &cleanup_opts),
+        SubCommand::Relocate(ref relocate_opts) => actions::relocate(&opts, relocate_opts),
+        SubCommand::Cleanup(ref cleanup_opts) => actions::cleanup(&opts, cleanup_opts),
     }
 }
