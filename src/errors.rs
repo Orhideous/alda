@@ -1,19 +1,14 @@
-#[derive(Debug)]
-pub(crate) enum Error {
-    Io(std::io::Error),
-    SerDe(serde_bencode::Error),
-    Traverse(walkdir::Error),
-    Unknown,
-}
+use std::io;
+use thiserror::Error;
 
-impl From<std::io::Error> for Error {
-    fn from(err: std::io::Error) -> Self { Error::Io(err) }
-}
-
-impl From<serde_bencode::Error> for Error {
-    fn from(err: serde_bencode::Error) -> Self { Error::SerDe(err) }
-}
-
-impl From<walkdir::Error> for Error {
-    fn from(err: walkdir::Error) -> Self { Error::Traverse(err) }
+#[derive(Error, Debug)]
+pub(crate) enum AldaError {
+    #[error("Failed to process file")]
+    Io(#[from] io::Error),
+    #[error("Failed to deserialize torrent")]
+    SerDe(#[from] serde_bencode::Error),
+    #[error("Failed to traverse directory")]
+    Traverse(#[from] walkdir::Error),
+    #[error(transparent)]
+    Other(#[from] anyhow::Error),
 }

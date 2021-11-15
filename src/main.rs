@@ -1,4 +1,6 @@
 #[macro_use]
+extern crate anyhow;
+#[macro_use]
 extern crate log;
 #[macro_use]
 extern crate serde_derive;
@@ -6,13 +8,15 @@ extern crate serde_derive;
 use std::path::PathBuf;
 
 use clap::Parser;
+use anyhow::Result;
 
+use crate::errors::AldaError;
 use crate::layout::Layout;
 
-mod layout;
-mod torrent;
 mod errors;
 mod fetch;
+mod layout;
+mod torrent;
 
 /// This doc string acts as a help message when the user runs '--help'
 /// as do all doc strings on fields
@@ -28,13 +32,12 @@ struct Opts {
     source: PathBuf,
 
     /// Layout type
-    #[clap(short, long, possible_values = ["simple", "nested"])]
+    #[clap(short, long, possible_values = ["simple", "nested"], default_value = "simple")]
     layout: Layout,
 
     #[clap(subcommand)]
     subcommand: SubCommand,
 }
-
 
 #[derive(Parser, Debug)]
 enum SubCommand {
@@ -66,8 +69,38 @@ struct Cleanup {
     force: bool,
 }
 
-fn main() {
+fn main() -> Result<()> {
     simple_logger::init_with_env().unwrap();
     let opts: Opts = Opts::parse();
-    info!("{:#?}", opts);
+    trace!("{:#?}", opts);
+
+    match opts.subcommand {
+        SubCommand::Inspect(_) => {
+            let known_torrents = fetch::collect_downloaded_torrents(opts.source, opts.layout)?;
+
+            warn!("Not implemented yet!");
+            Ok(())
+        }
+        SubCommand::Move(_) => {
+            warn!("Not implemented yet!");
+            Ok(())
+        }
+        SubCommand::Cleanup(opts) => {
+            warn!("Not implemented yet!");
+            Ok(())
+        }
+    }
+    // match &result {
+    //     Ok(_) => {
+    //         info!("Done!")
+    //     }
+    //     Err(Error::Io(why)) => {
+    //         error!("I/O error occured: {}", why)
+    //     }
+    //     Err(Error::SerDe(why)) => {}
+    //     Err(Error::Traverse(why)) => {
+    //         error!("Can't traverse directory: {}", why)
+    //     }
+    //     Err(Error::Unknown) => {}
+    // }
 }
