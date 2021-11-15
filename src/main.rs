@@ -1,25 +1,18 @@
+#[macro_use]
+extern crate log;
+#[macro_use]
+extern crate serde_derive;
+
 use std::path::PathBuf;
-use std::str::FromStr;
 
 use clap::Parser;
 
-#[derive(Debug)]
-enum Layout {
-    Simple,
-    Nested,
-}
+use crate::layout::Layout;
 
-impl FromStr for Layout {
-    type Err = &'static str;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "simple" => Ok(Layout::Simple),
-            "nested" => Ok(Layout::Nested),
-            _ => Err("Unknown layout"),
-        }
-    }
-}
+mod layout;
+mod torrent;
+mod errors;
+mod fetch;
 
 /// This doc string acts as a help message when the user runs '--help'
 /// as do all doc strings on fields
@@ -74,6 +67,7 @@ struct Cleanup {
 }
 
 fn main() {
+    simple_logger::init_with_env().unwrap();
     let opts: Opts = Opts::parse();
-    println!("{:#?}", opts);
+    info!("{:#?}", opts);
 }
