@@ -14,7 +14,7 @@ use crate::layout::Layout;
 use crate::opts::{Opts, SubCommand};
 
 mod errors;
-mod fetch;
+mod actions;
 mod layout;
 mod opts;
 mod torrent;
@@ -25,19 +25,8 @@ fn main() -> Result<()> {
     trace!("{:#?}", opts);
 
     match opts.subcommand {
-        SubCommand::Inspect(_) => {
-            let known_torrents = fetch::collect_downloaded_torrents(opts.source, opts.layout)?;
-
-            warn!("Not implemented yet!");
-            Ok(())
-        }
-        SubCommand::Move(_) => {
-            warn!("Not implemented yet!");
-            Ok(())
-        }
-        SubCommand::Cleanup(opts) => {
-            warn!("Not implemented yet!");
-            Ok(())
-        }
+        SubCommand::Inspect(_) => actions::inspect(&opts),
+        SubCommand::Relocate(relocate_opts) => actions::relocate(&opts, &relocate_opts),
+        SubCommand::Cleanup(cleanup_opts) => actions::cleanup(&opts, &cleanup_opts),
     }
 }

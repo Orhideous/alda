@@ -26,7 +26,7 @@ pub(crate) struct Opts {
 #[derive(Parser, Debug)]
 pub(crate) enum SubCommand {
     Inspect(Inspect),
-    Move(Move),
+    Relocate(Relocate),
     Cleanup(Cleanup),
 }
 
@@ -34,9 +34,9 @@ pub(crate) enum SubCommand {
 #[derive(Parser, Debug)]
 pub(crate) struct Inspect {}
 
-/// Move orphaned files to separate directory
+/// Relocate orphaned files to separate directory
 #[derive(Parser, Debug)]
-pub(crate) struct Move {
+pub(crate) struct Relocate {
     /// Where to move orphaned files
     #[clap(short, long)]
     pub(crate) destination: String,

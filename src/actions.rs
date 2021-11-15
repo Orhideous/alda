@@ -9,6 +9,7 @@ use serde_bencode::de;
 use walkdir::{DirEntry, WalkDir};
 
 use crate::layout::Layout;
+use crate::opts::{Cleanup, Opts, Relocate};
 use crate::torrent::Torrent;
 
 #[derive(Debug)]
@@ -33,10 +34,7 @@ fn inspect_downloaded<'a>(
     }
 }
 
-pub(crate) fn collect_downloaded_torrents(
-    data_dir: PathBuf,
-    layout: Layout,
-) -> Result<HashSet<String>> {
+fn collect_downloaded_torrents(data_dir: PathBuf, layout: Layout) -> Result<HashSet<String>> {
     let depth = match layout {
         Layout::Simple => 1,
         Layout::Nested => 2,
@@ -93,4 +91,19 @@ fn collect_known_torrents(torrents_dir: PathBuf) -> Result<HashSet<String>> {
 
     info!("Collected {} known torrents", result.len());
     Ok(result)
+}
+
+pub(crate) fn inspect(opts: &Opts) -> Result<()> {
+    warn!("Not implemented yet!");
+    Ok(())
+}
+
+pub(crate) fn relocate(opts: &Opts, relocate_opts: &Relocate) -> Result<()> {
+    warn!("Not implemented yet!");
+    Ok(())
+}
+
+pub(crate) fn cleanup(opts: &Opts, cleanup_opts: &Cleanup) -> Result<()> {
+    warn!("Not implemented yet!");
+    Ok(())
 }
