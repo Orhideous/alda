@@ -32,7 +32,11 @@ pub(crate) enum SubCommand {
 
 /// Look for orphaned files without torrents
 #[derive(Parser, Debug)]
-pub(crate) struct Inspect {}
+pub(crate) struct Inspect {
+    /// List all suspicious files
+    #[clap(short, long)]
+    pub(crate) verbose: bool,
+}
 
 /// Relocate orphaned files to separate directory
 #[derive(Parser, Debug)]

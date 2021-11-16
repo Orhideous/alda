@@ -38,7 +38,7 @@ fn main() -> Result<()> {
     trace!("{:#?}", opts);
 
     match opts.subcommand {
-        SubCommand::Inspect(_) => actions::inspect(&opts),
+        SubCommand::Inspect(ref inspect_opts) => actions::inspect(&opts, inspect_opts),
         SubCommand::Relocate(ref relocate_opts) => actions::relocate(&opts, relocate_opts),
         SubCommand::Cleanup(ref cleanup_opts) => actions::cleanup(&opts, cleanup_opts),
     }
